@@ -23,6 +23,8 @@ Screen Capture
 JavaScript:  [一个用canvas画热力图的利器] http://www.cnblogs.com/bdqlaccp/archive/2012/09/12/2681518.html
 jQuery:  [浅谈Heatmap] http://huoding.com/2011/01/04/39
 Python:  [pyHeatMap : 使用Python绘制热图的库] http://oldj.net/article/python-heat-map/
+
+
 2、基本原理：
 A、创建一个跟图片大小或者网页或者窗口一样大小的二维数组（可用一维实现），例如图片分辨率为1024x768，则你的二维数组为768行，1024列，数据所有元素均初始化为0。
 B、准备两张同样大小的画布（在Qt下可用QImage，在JavaScript下可用canvas，在Python下可用PIL库的Image），一张用于绘制灰度渐变圆圈（假设为 Alpha_Canvas），一张用于着色后显示输出（Output_Canvas）。
@@ -32,6 +34,8 @@ E、我们保存一个整个数组中单个位置被点击次数最多的值（�
 F、选择Alpha_Canvas画布，在被点击的地方绘制一个径向渐变的圆，圆心为被点击的坐标，半径可根据需要自由设置，径向渐变圆的是灰度渐变圆圈，整个径向渐变圆圈是一个黑色圆圈，但圆心的颜色要比边界的深，而圆心的Alpha通道值是该点的被点击次数（假设为：current_count）与被点击次数最多的值之比乘以255（255要根据你的绘图环境来确定，在Qt中255表示完全不透明，0表示完全透明），即公式：current_count/max*255。
 G、选择Output_Canva画布，进行着色操作，根据上一步的圆心和半径可确定一个矩形区域，如果是重绘操作，则该矩形区域为整个图形区域。对该矩形区域进行遍历，取出Alpha_Canvas画布上每个颜色点的Alpha通道值，根据此值从调色板上取出对应的颜色，R、G、B三个值用从调色板取来的值，但Alpha通道值不能相同，在这里可以设置一个阈值，用于决定渐变开始的半径，也可以自由修改。将这四个值决定的颜色点绘制到Output_Canvas画布上，依此操作，直至遍历结束。
 H、完成着色操作后，整个绘图过程就完毕了。
+
+
 3、开源项目
 JavaScript 版本：[heatmap.js]   http://www.patrick-wied.at/static/heatmapjs/index.html
 Python 版本：[pyHeatMap]  https://github.com/oldj/pyheatmap
